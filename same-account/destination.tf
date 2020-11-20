@@ -12,7 +12,7 @@ resource "random_id" "randrepl" {
 resource "aws_kms_key" "destination" {
   provider                = aws.dest
   deletion_window_in_days = 7
-  force_destroy = true
+  force_destroy           = true
   tags = merge(
     {
       "Name" = "destination_data"

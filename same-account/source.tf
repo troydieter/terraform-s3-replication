@@ -2,10 +2,10 @@
 # IAM role that S3 can use to read our bucket for replication
 # ------------------------------------------------------------------------------
 resource "aws_iam_role" "replication" {
-  provider    = aws.source
-  name_prefix = "${var.bucket_prefix}-source-${random_id.randrepl.hex}"
-  description = "Allow S3 to assume the role for replication"
-  force_destroy = true
+  provider           = aws.source
+  name_prefix        = "${var.bucket_prefix}-source-${random_id.randrepl.hex}"
+  description        = "Allow S3 to assume the role for replication"
+  force_destroy      = true
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
