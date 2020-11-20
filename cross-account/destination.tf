@@ -63,6 +63,7 @@ resource "aws_kms_alias" "destination" {
 resource "aws_s3_bucket" "destination" {
   provider      = aws.dest
   bucket_prefix = "${var.bucket_prefix}-dest-${random_id.randrepl.hex}"
+  force_destroy           = true
   acl           = "private"
 
   versioning {

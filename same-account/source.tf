@@ -5,7 +5,6 @@ resource "aws_iam_role" "replication" {
   provider           = aws.source
   name_prefix        = "${var.bucket_prefix}-source-${random_id.randrepl.hex}"
   description        = "Allow S3 to assume the role for replication"
-  force_destroy      = true
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -115,7 +114,6 @@ resource "aws_iam_policy_attachment" "replication" {
 resource "aws_kms_key" "source" {
   provider                = aws.source
   deletion_window_in_days = 7
-
   tags = merge(
     {
       "Name" = "source_data"
@@ -136,6 +134,7 @@ resource "aws_kms_alias" "source" {
 resource "aws_s3_bucket" "source" {
   provider      = aws.source
   bucket_prefix = "${var.bucket_prefix}-src-${random_id.randrepl.hex}"
+  force_destroy           = true
   acl           = "private"
 
   versioning {
