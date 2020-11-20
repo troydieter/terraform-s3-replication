@@ -3,9 +3,9 @@
 # ------------------------------------------------------------------------------
 resource "aws_iam_role" "replication" {
   provider    = aws.source
-  name_prefix = "replication"
+  name_prefix = "${var.bucket_prefix}-source-${random_id.randrepl.hex}"
   description = "Allow S3 to assume the role for replication"
-
+  force_destroy = true
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -26,7 +26,7 @@ POLICY
 
 resource "aws_iam_policy" "replication" {
   provider    = aws.source
-  name_prefix = "replication"
+  name_prefix = "${var.bucket_prefix}-source-${random_id.randrepl.hex}"
   description = "Allows reading for replication."
 
   policy = <<POLICY
@@ -104,7 +104,7 @@ POLICY
 
 resource "aws_iam_policy_attachment" "replication" {
   provider   = aws.source
-  name       = "replication"
+  name       = "${var.bucket_prefix}-src-iam-${random_id.randrepl.hex}"
   roles      = [aws_iam_role.replication.name]
   policy_arn = aws_iam_policy.replication.arn
 }
@@ -126,7 +126,7 @@ resource "aws_kms_key" "source" {
 
 resource "aws_kms_alias" "source" {
   provider      = aws.source
-  name          = "alias/source"
+  name          = "alias/src-kms-${random_id.randrepl.hex}"
   target_key_id = aws_kms_key.source.key_id
 }
 
@@ -135,9 +135,8 @@ resource "aws_kms_alias" "source" {
 # ------------------------------------------------------------------------------
 resource "aws_s3_bucket" "source" {
   provider      = aws.source
-  bucket_prefix = var.bucket_prefix
+  bucket_prefix = "${var.bucket_prefix}-src-${random_id.randrepl.hex}"
   acl           = "private"
-  region        = var.source_region
 
   versioning {
     enabled = true

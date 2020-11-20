@@ -7,7 +7,7 @@ variable "tags" {
 }
 
 variable "bucket_prefix" {
-  default = "crr-example"
+  default = "bucket-repl"
 }
 
 variable "source_account" {
