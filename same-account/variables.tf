@@ -15,7 +15,7 @@ variable "dest_region" {
 }
 
 variable "bucket_prefix" {
-  default = "crr-example"
+  default = "bucket-repl"
 }
 
 variable "aws_region" {
